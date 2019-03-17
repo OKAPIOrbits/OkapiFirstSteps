@@ -1,0 +1,8 @@
+{
+    "grant_type":"password",
+    "username": <include_your_username>,
+    "password": <include_your_password>,
+    "audience": "https://api.okapiorbits.space/picard",
+    "client_id": "jrk0ZTrTuApxUstXcXdu9r71IX5IeKD3",
+    "scope": "something"
+}
