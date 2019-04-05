@@ -14,7 +14,7 @@ wget --content-on-error --output-document=request_response.json --body-file=pass
 sleep 3
 
 # get the result
-request_id=`cat request_response.json | jq '.requestId'`
+request_id=`cat request_response.json | jq '.request_id'`
 wget --content-on-error --output-document=pass_prediction_result.json --header="access_token: ${ACCESS_TOKEN_VALUE}" http://okapi.ddns.net:34568/pass/predictions/${request_id}
 
 # wait, so that you can read the server response

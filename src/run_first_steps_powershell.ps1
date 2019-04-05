@@ -13,7 +13,7 @@ wget -Uri http://okapi.ddns.net:34568/pass/prediction/requests -Headers @{"conte
 Start-Sleep -s 3
 
 # get the result
-$request_id = (Get-Content '.\request_response.json' | ConvertFrom-Json).requestId
+$request_id = (Get-Content '.\request_response.json' | ConvertFrom-Json).request_id
 wget -Uri http://okapi.ddns.net:34568/pass/predictions/${request_id} -Headers @{"access_token"=$token} -OutFile "pass_prediction_result.json"
 
 # wait, so that you can read the server response
