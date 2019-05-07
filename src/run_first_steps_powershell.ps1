@@ -7,17 +7,20 @@ wget -Uri https://okapi-development.eu.auth0.com/oauth/token -Headers @{"content
 $token = (Get-Content '.\token.json' | ConvertFrom-Json).access_token
 
 # Send your request to the server. You can change the request in the pass_prediction_request.json file.
-wget -Uri http://okapi.ddns.net:34568/pass/prediction/requests -Headers @{"content-type"="application/json";"Accept"="application/json";"access_token"=$token} -Method POST -Body $(get-content pass_prediction_request.json -raw) -OutFile "request_response.json" 
+wget -Uri http://okapi.ddns.net:34569/pass/prediction/requests -Headers @{"content-type"="application/json";"Accept"="application/json";"access_token"=$token} -Method POST -Body $(get-content pass_prediction_request.json -raw) -OutFile "request_response.json" 
 
-# wait a moment to let the server process the request
+# Wait a moment to let the server process the request
 Start-Sleep -s 3
 
-# get the result
+
+# Get the request id from request_response.json and remove the quotes
 $request_id = (Get-Content '.\request_response.json' | ConvertFrom-Json).request_id
-wget -Uri http://okapi.ddns.net:34568/pass/predictions/${request_id} -Headers @{"access_token"=$token} -OutFile "pass_prediction_result.json"
 
-# wait, so that you can read the server response
+# Contact the server and retrieve the pass prediction result with the extracted request id
+wget -Uri http://okapi.ddns.net:34569/pass/predictions/${request_id} -Headers @{"access_token"=$token} -OutFile "pass_prediction_result.json"
+
+# Wait, so that you can read the server response
 Start-Sleep -s 3
 
-# print it nicely to the terminal
+# Print it nicely to the terminal
 Get-Content .\pass_prediction_result.json | ConvertFrom-Json  | ConvertTo-Json
