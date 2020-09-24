@@ -7,7 +7,7 @@ wget -Uri https://okapi-development.eu.auth0.com/oauth/token -Headers @{"content
 $token = (Get-Content '.\token.json' | ConvertFrom-Json).access_token
 
 # Send your request to the server. You can change the request in the pass_prediction_request.json file.
-wget -Uri http://okapi.ddns.net:34568/predict-passes/sgp4/requests -Headers @{"content-type"="application/json";"Accept"="application/json";"access_token"=$token;"Authorization"='Bearer '$token} -Method POST -Body $(get-content pass_prediction_request.json -raw) -OutFile "request_response.json" 
+wget -Uri https://platform.okapiorbits.com/api/predict-passes/sgp4/requests -Headers @{"content-type"="application/json";"Accept"="application/json";"Authorization"='Bearer '$token} -Method POST -Body $(get-content pass_prediction_request.json -raw) -OutFile "request_response.json"
 
 # Wait a moment to let the server process the request
 Start-Sleep -s 3
@@ -17,7 +17,7 @@ Start-Sleep -s 3
 $request_id = (Get-Content '.\request_response.json' | ConvertFrom-Json).request_id
 
 # Contact the server and retrieve the pass prediction result with the extracted request id
-wget -Uri http://okapi.ddns.net:34568/predict-passes/sgp4/summary/results/${request_id} -Headers @{"access_token"=$token;"Authorization"='Bearer '$token} -OutFile "pass_prediction_result.json"
+wget -Uri https://platform.okapiorbits.com/api/predict-passes/sgp4/results/${request_id}/summary -Headers @{"Authorization"='Bearer '$token} -OutFile "pass_prediction_result.json"
 
 # Wait, so that you can read the server response
 Start-Sleep -s 3
